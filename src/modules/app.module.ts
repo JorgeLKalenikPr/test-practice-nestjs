@@ -1,9 +1,9 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { validateEnv } from './config/env.config';
+import { validateEnv } from '../config/env.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { databaseConfig } from './config/db.config';
-import { EndpointLoggerMiddleware } from './utils/middlewares/endpoint-logger.middleware';
+import { databaseConfig } from '../config/db.config';
+import { EndpointLoggerMiddleware } from '../utils/middlewares/endpoint-logger.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
