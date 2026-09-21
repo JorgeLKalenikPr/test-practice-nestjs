@@ -9,7 +9,7 @@ export class CategoryTypeOrmRepository implements ICategoryRepository {
   constructor(
     @InjectRepository(CategoryEntity)
     private readonly repository: Repository<CategoryEntity>,
-  ) {}
+  ) { }
 
   async create(category: Partial<CategoryEntity>): Promise<CategoryEntity> {
     return this.repository.create(category);
@@ -21,5 +21,13 @@ export class CategoryTypeOrmRepository implements ICategoryRepository {
 
   async delete(id: string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async findById(id: string): Promise<CategoryEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async findAll(): Promise<CategoryEntity[]> {
+    return this.repository.find();
   }
 }
