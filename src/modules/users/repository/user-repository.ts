@@ -9,7 +9,7 @@ export class UserTypeOrmRepository implements IUserRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
   async create(user: Partial<UserEntity>): Promise<UserEntity> {
     return this.repository.create(user);
@@ -21,5 +21,13 @@ export class UserTypeOrmRepository implements IUserRepository {
 
   async delete(id: string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async findById(id: string): Promise<UserEntity | null> {
+    return this.repository.findOneBy({ id });
+  }
+
+  async findAll(): Promise<UserEntity[]> {
+    return this.repository.find();
   }
 }
