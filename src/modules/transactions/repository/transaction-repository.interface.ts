@@ -1,7 +1,15 @@
-import { TransactionEntity } from '../models/entity/transactions.entity';
+import { TransactionEntity, TransactionType } from '../models/entity/transactions.entity';
 
 export interface ITransactionRepository {
   create(transaction: Partial<TransactionEntity>): Promise<TransactionEntity>;
   save(transaction: TransactionEntity): Promise<TransactionEntity>;
+  findById(id: string): Promise<TransactionEntity | null>;
   delete(id: string): Promise<void>;
+  sumAmountByUserCategoryPeriod(
+    userId: string,
+    categoryId: string | null,
+    month: number,
+    year: number,
+    type: TransactionType,
+  ): Promise<number>;
 }
