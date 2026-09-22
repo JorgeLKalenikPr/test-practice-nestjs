@@ -14,9 +14,13 @@ import { DeleteCategoryUseCase } from './use-cases/delete-category/delete-catego
 import { DeleteCategoryController } from './use-cases/delete-category/delete-category.controller';
 import { CATEGORY_REPOSITORY_INTERFACE_KEY } from './repository/categories-repository.key';
 import { CategoryTypeOrmRepository } from './repository/categories-repository';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CategoryEntity])],
+  imports: [
+    TypeOrmModule.forFeature([CategoryEntity]),
+    UsersModule,
+  ],
   controllers: [
     CreateCategoryController,
     FindAllCategoriesController,

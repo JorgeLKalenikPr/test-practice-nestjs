@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ITransactionRepository } from './transaction-repository.interface';
+import { ITransactionRepository, TransactionFilters } from './transaction-repository.interface';
 import { TransactionEntity, TransactionType } from '../models/entity/transactions.entity';
 
 @Injectable()
@@ -50,5 +50,29 @@ export class TransactionTypeOrmRepository implements ITransactionRepository {
 
     const result = await qb.getRawOne<{ total: string }>();
     return Number(result?.total ?? 0);
+  }
+
+  async findAll(filters: TransactionFilters): Promise<TransactionEntity[]> {
+    const qb = this.repository
+      .createQueryBuilder('t')
+      .where('t.user_id = :userId', { userId: filters.userId });
+
+    if (filters.month) {
+      qb.andWhere('EXTRACT(MONTH FROM t.transaction_date) = :month', { month: filters.month });
+    }
+
+    if (filters.year) {
+      qb.andWhere('EXTRACT(YEAR FROM t.transaction_date) = :year', { year: filters.year });
+    }
+
+    if (filters.categoryId) {
+      qb.andWhere('t.category_id = :categoryId', { categoryId: filters.categoryId });
+    }
+
+    if (filters.type) {
+      qb.andWhere('t.type = :type', { type: filters.type });
+    }
+
+    return qb.orderBy('t.transaction_date', 'DESC').getMany();
   }
 }

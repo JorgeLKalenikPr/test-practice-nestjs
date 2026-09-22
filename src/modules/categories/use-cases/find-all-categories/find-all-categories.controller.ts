@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FindAllCategoriesUseCase } from './find-all-categories.use-case';
 import { FindAllCategoriesDocs } from './find-all-categories.swagger';
@@ -10,7 +10,7 @@ export class FindAllCategoriesController {
 
   @Get()
   @FindAllCategoriesDocs()
-  async findAll() {
-    return this.findAllCategoriesUseCase.execute();
+  async findAll(@Query('userId') userId: string) {
+    return this.findAllCategoriesUseCase.execute(userId);
   }
 }

@@ -9,6 +9,7 @@ import {
 import { CategoryEntity } from '../../../categories/models/entity/category.entity';
 import { TransactionEntity } from '../../../transactions/models/entity/transactions.entity';
 import { BudgetEntity } from '../../../budgets/models/entity/budget.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({
   name: 'users',
@@ -35,6 +36,7 @@ export class UserEntity {
     type: 'varchar',
     length: 255,
   })
+  @Exclude()
   passwordHash: string;
 
   @CreateDateColumn({

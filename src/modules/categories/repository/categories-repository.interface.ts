@@ -4,6 +4,6 @@ export interface ICategoryRepository {
   create(category: Partial<CategoryEntity>): Promise<CategoryEntity>;
   save(category: CategoryEntity): Promise<CategoryEntity>;
   findById(id: string): Promise<CategoryEntity | null>;
-  findAll(): Promise<CategoryEntity[]>;
+  findAllForUser(userId: string): Promise<CategoryEntity[]>;
   delete(id: string): Promise<void>;
 }

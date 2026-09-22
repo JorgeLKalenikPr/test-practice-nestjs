@@ -38,7 +38,7 @@ export class TransactionEntity {
   userId: string;
 
   @Column({ name: 'category_id', nullable: true })
-  categoryId: number | null;
+  categoryId: string | null;
 
   @ManyToOne(() => UserEntity, (user) => user.transactions, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })

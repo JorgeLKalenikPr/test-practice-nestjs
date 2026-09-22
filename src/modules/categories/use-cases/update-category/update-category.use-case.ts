@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CategoryEntity } from '../../models/entity/category.entity';
 import { UpdateCategoryDto } from './update-category.dto';
 import { CATEGORY_REPOSITORY_INTERFACE_KEY } from '../../repository/categories-repository.key';
@@ -15,6 +15,10 @@ export class UpdateCategoryUseCase {
     const category = await this.categoryRepository.findById(id);
     if (!category) {
       throw new NotFoundException('Categoria não encontrada');
+    }
+
+    if (category.userId === null) {
+      throw new ForbiddenException('Categorias globais do sistema não podem ser editadas');
     }
 
     Object.assign(category, dto);

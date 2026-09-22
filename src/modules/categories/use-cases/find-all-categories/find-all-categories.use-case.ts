@@ -10,7 +10,7 @@ export class FindAllCategoriesUseCase {
     private readonly categoryRepository: ICategoryRepository,
   ) {}
 
-  async execute(): Promise<CategoryEntity[]> {
-    return this.categoryRepository.findAll();
+  async execute(userId: string): Promise<CategoryEntity[]> {
+    return this.categoryRepository.findAllForUser(userId);
   }
 }

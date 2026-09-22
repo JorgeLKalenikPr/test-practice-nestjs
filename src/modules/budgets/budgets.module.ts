@@ -16,9 +16,16 @@ import { GetBudgetProgressController } from './use-cases/get-budget-progress/get
 import { TransactionsModule } from '../transactions/transaction.module';
 import { BUDGET_REPOSITORY_INTERFACE_KEY } from './repository/budget-repository.key';
 import { BudgetTypeOrmRepository } from './repository/budget-repository';
+import { UsersModule } from '../users/users.module';
+import { CategoriesModule } from '../categories/categories.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BudgetEntity]), TransactionsModule],
+  imports: [
+    TypeOrmModule.forFeature([BudgetEntity]), 
+    TransactionsModule,
+    UsersModule,
+    CategoriesModule
+  ],
   controllers: [
     CreateBudgetController,
     FindAllBudgetsController,

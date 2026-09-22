@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CATEGORY_REPOSITORY_INTERFACE_KEY } from '../../repository/categories-repository.key';
 import { type ICategoryRepository } from '../../repository/categories-repository.interface';
 
@@ -13,6 +13,10 @@ export class DeleteCategoryUseCase {
     const category = await this.categoryRepository.findById(id);
     if (!category) {
       throw new NotFoundException('Categoria não encontrada');
+    }
+
+    if (category.userId === null) {
+      throw new ForbiddenException('Categorias globais do sistema não podem ser removidas');
     }
 
     await this.categoryRepository.delete(id);

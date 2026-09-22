@@ -1,25 +1,25 @@
-import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common';
-import { type IBudgetRepository } from '../../repository/budget-repository.interface';
-import { BUDGET_REPOSITORY_INTERFACE_KEY } from '../../repository/budget-repository.key';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { type ITransactionRepository } from '../../repository/transaction-repository.interface';
+import { TRANSACTION_REPOSITORY_INTERFACE_KEY } from '../../repository/transaction-repository.key';
 import { type IUserRepository } from '../../../users/repository/user-repository.interface';
 import { USER_REPOSITORY_INTERFACE_KEY } from '../../../users/repository/user-repository.key';
-import { BudgetEntity } from '../../models/entity/budget.entity';
-import { CreateBudgetDto } from './create-budget.dto';
+import { TransactionEntity } from '../../models/entity/transactions.entity';
+import { CreateTransactionDto } from './create-transaction.dto';
 import { CATEGORY_REPOSITORY_INTERFACE_KEY } from '../../../categories/repository/categories-repository.key';
 import { type ICategoryRepository } from '../../../categories/repository/categories-repository.interface';
 
 @Injectable()
-export class CreateBudgetUseCase {
+export class CreateTransactionUseCase {
   constructor(
-    @Inject(BUDGET_REPOSITORY_INTERFACE_KEY)
-    private readonly budgetRepository: IBudgetRepository,
+    @Inject(TRANSACTION_REPOSITORY_INTERFACE_KEY)
+    private readonly transactionRepository: ITransactionRepository,
     @Inject(USER_REPOSITORY_INTERFACE_KEY)
     private readonly userRepository: IUserRepository,
     @Inject(CATEGORY_REPOSITORY_INTERFACE_KEY)
     private readonly categoryRepository: ICategoryRepository,
   ) {}
 
-  async execute(dto: CreateBudgetDto): Promise<BudgetEntity> {
+  async execute(dto: CreateTransactionDto): Promise<TransactionEntity> {
     const user = await this.userRepository.findById(dto.userId);
     if (!user) {
       throw new BadRequestException('Usuário informado não existe');
@@ -32,18 +32,7 @@ export class CreateBudgetUseCase {
       }
     }
 
-    const existing = await this.budgetRepository.findByUserCategoryMonthYear(
-      dto.userId,
-      dto.categoryId ?? null,
-      dto.month,
-      dto.year,
-    );
-
-    if (existing) {
-      throw new ConflictException('Já existe um orçamento para essa categoria neste mês/ano');
-    }
-
-    const budget = await this.budgetRepository.create(dto);
-    return this.budgetRepository.save(budget);
+    const transaction = await this.transactionRepository.create(dto);
+    return this.transactionRepository.save(transaction);
   }
 }
